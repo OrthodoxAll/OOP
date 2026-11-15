@@ -30,6 +30,21 @@ lint = [
     "flake8 (>=7.3.0,<8.0.0)"
 ]
 
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = [
+    "--cov=src",
+    "--cov-report=term-missing",
+    "--cov-report=html",
+    "--cov-fail-under=75",
+]
+
+[tool.coverage.run]
+source = ["src"]
+
+[tool.coverage.report]
+precision = 2
+
 [tool.isort]
 profile = "black"
 
