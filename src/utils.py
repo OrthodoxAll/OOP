@@ -4,14 +4,12 @@ from pathlib import Path
 from src.category import Category
 from src.product import Product
 
+DEFAULT_PRODUCTS_PATH = Path(__file__).resolve().parent.parent / "data" / "products.json"
 
-DEFAULT_PRODUCTS_PATH = (
-    Path(__file__).resolve().parent.parent / "data" / "products.json"
-)
 
-def read_json(path:str)->dict:
+def read_json(path: str) -> dict:
 
-    with open(path, "r",encoding='UTF=8') as file:
+    with open(path, "r", encoding="UTF=8") as file:
         data = json.load(file)
         return data
 
@@ -26,6 +24,7 @@ def creat_object_from_json(data):
         categoryes.append(Category(**category))
 
     return categoryes
+
 
 if __name__ == "__main__":
     raw_data = read_json(DEFAULT_PRODUCTS_PATH)
