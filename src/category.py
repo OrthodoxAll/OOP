@@ -6,7 +6,7 @@ class Category:
     description: str
     products: list
     category_count = 0
-    all_products_count =0
+    product_count =0
 
 
 
@@ -16,5 +16,5 @@ class Category:
         self.description = description
         self.products = products if products is not None else []
         Category.category_count += 1
-        Category.all_products_count += len(products) if products is not None else []
+        Category.product_count += len(products) if products is not None else []
 
