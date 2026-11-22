@@ -19,6 +19,12 @@ def test_product_init_attributes_types(first_product: Product) -> None:
     assert isinstance(first_product.quantity, int)
 
 
+def test_product_price_is_private(first_product: Product) -> None:
+    """Проверяет, что приватная цена недоступна напрямую."""
+    with pytest.raises(AttributeError):
+        _ = first_product.__price
+
+
 def test_product_init_second_product(second_product: Product) -> None:
     """Проверяет инициализацию второго товара."""
     assert second_product.name == "Iphone 15"
@@ -66,3 +72,48 @@ def test_product_instances_are_independent(
     assert first_product.quantity == 1
     assert second_product.quantity == 8
     assert first_product is not second_product
+
+
+def test_new_product() -> None:
+    """Проверяет создание товара из словаря."""
+    product = Product.new_product(
+        {
+            "name": "Iphone 15",
+            "description": "512GB, gray space",
+            "price": 210000.0,
+            "quantity": 8,
+        }
+    )
+
+    assert isinstance(product, Product)
+    assert product.name == "Iphone 15"
+    assert product.description == "512GB, gray space"
+    assert product.price == 210000.0
+    assert product.quantity == 8
+
+
+def test_price_setter_positive(first_product: Product) -> None:
+    """Проверяет обновление цены на положительное значение."""
+    first_product.price = 200000.0
+
+    assert first_product.price == 200000.0
+
+
+def test_price_setter_lower_positive(first_product: Product) -> None:
+    """Проверяет понижение цены на положительное значение."""
+    first_product.price = 150000.0
+
+    assert first_product.price == 150000.0
+
+
+@pytest.mark.parametrize("new_price", [0, -100])
+def test_price_setter_non_positive(
+    first_product: Product,
+    new_price: float,
+    capsys: pytest.CaptureFixture[str],
+) -> None:
+    """Нулевая и отрицательная цена отклоняются с сообщением в консоль."""
+    first_product.price = new_price
+
+    assert first_product.price == 180000.0
+    assert "Цена не должна быть нулевая или отрицательная" in capsys.readouterr().out
